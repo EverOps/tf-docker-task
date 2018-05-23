@@ -14,6 +14,18 @@ module "ebs-backups" {
   subnet_c   = "my-subnet-c"
   image      = "my-docker-image:latest"
   schedule   = "0 9 * * ? *"                     # 2AM PST every day
+  task_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ec2:*",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
 
   environment_variables = <<EOF
     { "name" : "ENVIRONMENT_VAR_A", "value" : "5" },
@@ -24,11 +36,11 @@ EOF
 
 It is required that you specify the following items:
 
-*env* - environment name. This value will be prepended to all resources created.
-*name* - name of task. This will be used to name various resources.
-*cluster_id* - ID of ECS cluster to run task in.
-*subnet_b/c* - subnet IDs to run tasks in. These must be subnets of the VPC that the cluster resides in.
-*schedule* - cron expression to specify how often to run this task.
+*env* - environment name. This value will be prepended to all resources created.  
+*name* - name of task. This will be used to name various resources.  
+*cluster_id* - ID of ECS cluster to run task in.  
+*subnet_b/c* - subnet IDs to run tasks in. These must be subnets of the VPC that the cluster resides in.  
+*schedule* - cron expression to specify how often to run this task.  
 
 ---
 
@@ -49,6 +61,5 @@ module "ebs-backups" {
   subnet_c   = "${module.vpc.nat_subnet_c}"
   image      = "my-docker-image:latest"
   schedule   = "0 9 * * ? *"                     # 2AM PST every day
-EOF
 }
 ```

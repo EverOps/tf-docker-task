@@ -43,3 +43,8 @@ variable "environment_variables" {
   #     { "name" : "VAR2", "value" : "VALUE2" }
   # EOF
 }
+
+variable "task_policy" {
+  type    = "string"
+  default = "none"
+}

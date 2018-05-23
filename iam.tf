@@ -148,30 +148,9 @@ EOF
 }
 
 resource "aws_iam_role_policy" "ecs_task_policy" {
-  name = "${var.env}-${var.name}_ecs_task_policy"
-  role = "${aws_iam_role.ecs_task_role.id}"
+  count = "${var.task_policy == "none" ? 0 : 1}"
+  name  = "${var.env}-${var.name}_ecs_task_policy"
+  role  = "${aws_iam_role.ecs_task_role.id}"
 
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "ec2:Describe*",
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:CreateSnapshot",
-                "ec2:DeleteSnapshot",
-                "ec2:CreateTags",
-                "ec2:ModifySnapshotAttribute",
-                "ec2:ResetSnapshotAttribute"
-            ],
-            "Resource": ["*"]
-        }
-    ]
-}
-EOF
+  policy = "${var.task_policy}"
 }
