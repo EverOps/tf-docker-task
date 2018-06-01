@@ -1,4 +1,6 @@
-data "aws_region" "current" {}
+variable "aws_region" {
+  default = "us-east-1"
+}
 
 variable "env" {
   description = "Used as a prefix to all resource names, tags, etc."
