@@ -176,10 +176,19 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
         "Effect": "Allow",
         "Action": [
             "ssm:GetParameters",
-            "ssm:GetParametersByPath"
         ],
         "Resource": [
             "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/${var.secret_namespace}*"
+        ]
+    },
+    {
+        "Sid": "Stmt1482841904000",
+        "Effect": "Allow",
+        "Action": [
+            "ssm:GetParametersByPath"
+        ],
+        "Resource": [
+            "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/${var.secret_namespace}"
         ]
     },
     {
