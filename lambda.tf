@@ -1,6 +1,6 @@
 data "archive_file" "lambdazip" {
   type        = "zip"
-  output_path = "lambda.zip"
+  output_path = "lambda-${var.name}.zip"
 
   source {
     content  = "${data.template_file.starttask-py.rendered}"
@@ -20,7 +20,7 @@ data "template_file" "starttask-py" {
 }
 
 resource "aws_lambda_function" "start_task" {
-  filename         = "lambda.zip"
+  filename         = "lambda-${var.name}.zip"
   function_name    = "${replace(var.env, ".", "-")}-${replace(var.name, ".", "-")}-trigger"
   role             = "${aws_iam_role.lambda_execution_role.arn}"
   handler          = "starttask.handler"
