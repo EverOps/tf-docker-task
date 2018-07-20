@@ -177,7 +177,7 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
             "ssm:GetParameters"
         ],
         "Resource": [
-            "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/${var.secret_namespace}*"
+            "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter${var.secret_namespace}*"
         ]
     },
     {
@@ -186,7 +186,7 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
             "ssm:GetParametersByPath"
         ],
         "Resource": [
-            "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter/${var.secret_namespace}"
+            "arn:aws:ssm:${var.aws_region}:${data.aws_caller_identity.current.account_id}:parameter${var.secret_namespace}"
         ]
     },
     {
