@@ -172,7 +172,6 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
         "Resource": "*"
     },
     {
-        "Sid": "Stmt1482841904000",
         "Effect": "Allow",
         "Action": [
             "ssm:GetParameters"
@@ -182,7 +181,6 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
         ]
     },
     {
-        "Sid": "Stmt1482841904000",
         "Effect": "Allow",
         "Action": [
             "ssm:GetParametersByPath"
@@ -192,7 +190,6 @@ resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
         ]
     },
     {
-        "Sid": "Stmt1482841948000",
         "Effect": "Allow",
         "Action": [
             "kms:Decrypt"
