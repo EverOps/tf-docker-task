@@ -157,7 +157,7 @@ resource "aws_iam_role_policy" "ecs_task_policy" {
 
 resource "aws_iam_role_policy" "ecs_task_policy_ssm_parameter" {
   count = "${var.secret_namespace == "none" ? 0 : 1}"
-  name  = "${var.env}-${var.name}_ecs_task_policy"
+  name  = "${var.env}-${var.name}_ecs_parameter_task_policy"
   role  = "${aws_iam_role.ecs_task_role.id}"
 
   policy = <<EOF
