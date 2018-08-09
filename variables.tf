@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 variable "aws_region" {
   default = "us-east-1"
 }
@@ -44,6 +46,21 @@ variable "environment_variables" {
   #     { "name" : "VAR1", "value" : "VALUE1" },
   #     { "name" : "VAR2", "value" : "VALUE2" }
   # EOF
+}
+
+variable "secret_namespace" {
+  description = "A SSM Parameter store secret namespace. Example, `/fargate-scheduler/ebs-backups/prod`. All secrets under this namespace will be passed into the container as environment variables at runtime. These environment variables must not collide with any that are defined in the `environment_variables` input variable"
+  default     = "none"
+}
+
+variable "kms_key_arn" {
+  description = "KMS key used to decrypt the SSM Parameters from the `secret_namespace` variable. Required if using secrets"
+  default     = "none"
+}
+
+variable "ssm_parameter_region" {
+  description = "AWS region that the SSM parameters are stored in"
+  default     = "none"
 }
 
 variable "task_policy" {
