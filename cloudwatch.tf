@@ -12,22 +12,38 @@ resource "aws_cloudwatch_event_rule" "schedule" {
   schedule_expression = "cron(${var.schedule})"
 }
 
-resource "aws_cloudwatch_metric_alarm" "error" {
-  alarm_name          = "${var.env}-${var.name}-failedinvocation"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "FailedInvocations"
-  namespace           = "AWS/Events"
-  period              = "300"
-  statistic           = "Sum"
-  threshold           = "0"
-  alarm_description   = "Alert on failed invocation for ECS ${var.env}-${var.name} task"
+resource "aws_cloudwatch_event_rule" "failed-task" {
+  count = "${var.failed_invocation_alarm_action == "none" ? 0 : 1}"
+  name        = "${var.env}-${var.name}-failed"
+  description = "Alerts when a container in an ECS task exits with a return code of '1'"
 
-  dimensions {
-    RuleName = "${aws_cloudwatch_event_rule.schedule.name}"
+  event_pattern = <<PATTERN
+{
+  "source": [
+    "aws.ecs"
+  ],
+  "detail-type": [
+    "ECS Task State Change"
+  ],
+  "detail": {
+    "clusterArn": [
+      "${var.cluster_id}"
+    ],
+    "containers": {
+      "exitCode": [
+        1
+      ]
+    }
   }
+}
+PATTERN
+}
 
-  alarm_actions = "${var.failed_invocation_alarm_actions}"
+resource "aws_cloudwatch_event_target" "sns" {
+  count = "${var.failed_invocation_alarm_action == "none" ? 0 : 1}"
+  rule      = "${aws_cloudwatch_event_rule.failed-task.name}"
+  target_id = "${var.env}-${var.name}-SendToSNS"
+  arn       = "${var.failed_invocation_alarm_action}"
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
