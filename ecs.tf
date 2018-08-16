@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "task" {
         "essential": true,
         "image": "${var.image}",
         "memory": 512,
-        "name": "${replace(var.env, ".", "-")}-ebs_backups",
+        "name": "${replace(var.env, ".", "-")}-${var.name}",
         "networkMode": "awsvpc",
         "logConfiguration": {
             "logDriver": "awslogs",

@@ -33,9 +33,9 @@ variable "schedule" {
   default     = "0 6 ? * * *"                                                                     # 6 AM every day
 }
 
-variable "failed_invocation_alarm_actions" {
-  description = "A list of SNS topics to broadcast to when the task fails. Defaults to empty."
-  default     = []
+variable "failed_invocation_alarm_action" {
+  description = "A SNS topic ARN to broadcast to when the task fails. Defaults to empty."
+  default = "none"
 }
 
 variable "environment_variables" {
